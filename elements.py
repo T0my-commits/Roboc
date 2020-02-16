@@ -26,27 +26,25 @@ def effacer_ecran():
 def retrouver_carte():
 	""" Fonction chargée de retrouver les cartes du dossier <cartes>. """
 	cartes = DictionnaireOrdonné()
-	append = dict()
 
 # Récupération des cartes :
-	for nom_fichier in os.listdir('cartes'):	# on lit les cartes..
-		if nom_fichier.endswith('.txt'):		# on sélectionne les fichiers .txt
-			path = os.path.join('cartes', nom_fichier)	# on crée un chemin vers le fichier de la carte..
-			nom_carte = nom_fichier[:-4].capitalize()	# on crée son nom..
-			with open(path, 'r') as fichier:			# on lit son contenu..
+	for nom_fichier in os.listdir('cartes'):
+		if nom_fichier.endswith('.txt'):
+			path = os.path.join('cartes', nom_fichier)
+			nom_carte = nom_fichier[:-4].capitalize()
+			with open(path, 'r') as fichier:
 				nom_fichier = str(fichier.read())
-				nom_fichier = CartesClass(nom_carte, nom_fichier)	# on enregistre notre carte dans une
-				append[nom_carte] = nom_fichier
-				cartes.appends_début(nom_carte, nom_fichier)		# on enregistre notre carte dans un
-#				cartes.reverse()					# parties ordonné..
-				fichier.close()						# on ferme notre fichier..
+				nom_fichier = CartesClass(nom_carte, nom_fichier)
+				# on ajoute la carte dans le dictionnaire 'cartes';
+				cartes.appends_début(nom_carte, nom_fichier)
+				fichier.close()
 
 
 # Affichage du menu :
 #	effacer_ecran()		# nettoyage de l'écran..
 	print("\nListe des niveaux :")
-	for i,carte in enumerate(cartes.keys()):					# affichage des différents
-		if i == len(cartes) - 1:								# niveaux..
+	for i,carte in enumerate(cartes.keys()):
+		if i == len(cartes) - 1:
 			print("   '- <{0}> - Level {0} : {1}.\n".format(i + 1, cartes.keys()[-1]))
 		elif i < len(cartes):
 			print("   |- <{0}> - Level {0} : {1}.".format(i + 1, cartes.keys()[i]))
@@ -87,28 +85,28 @@ def selection_partie(cartes, parties_new):
 
 # Sélection de la partie :
 	selection = input("\n<level> ")
-#	try:
-	selection = int(selection)
-	assert selection != 0
-	selection -= 1
-	if selection == len(cartes) and len(parties_new) == 2:
-		return déplacements(1)
-	else:									# création d'une nouvelle partie..
-		parties_new = (cartes.items(selection))
-		enregistrer(parties_new, 'partie/parties_new.txt')
-		return déplacements(0)
-#	except TypeError:
-#		print("<TypeError> Vous n'avez pas entrer un nombre.")
-#		return retrouver_carte()
-#	except ValueError:
-#		print("<ValueError> Vous n'avez pas saisi un nombre.")
-#		return retrouver_carte()
-#	except IndexError:
-#		print("<IndexError> Vous avez saisi un nombre trop grand.")
-#		return retrouver_carte()
-#	except AssertionError:
-#		print("<AssertionError> Vous n'avez pas saisi un nombre valide.")
-#		return retrouver_carte()
+	try:
+		selection = int(selection)
+		assert selection != 0
+		selection -= 1
+		if selection == len(cartes) and len(parties_new) == 2:
+			return déplacements(1)
+		else:
+			parties_new = (cartes.items(selection))
+			enregistrer(parties_new, 'partie/parties_new.txt')
+			return déplacements(0)
+	except TypeError:
+		print("<TypeError> Vous n'avez pas entrer un nombre.")
+		return retrouver_carte()
+	except ValueError:
+		print("<ValueError> Vous n'avez pas saisi un nombre.")
+		return retrouver_carte()
+	except IndexError:
+		print("<IndexError> Vous avez saisi un nombre trop grand.")
+		return retrouver_carte()
+	except AssertionError:
+		print("<AssertionError> Vous n'avez pas saisi un nombre valide.")
+		return retrouver_carte()
 
 
 def enregistrer(objet, fichier):
